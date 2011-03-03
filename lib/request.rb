@@ -86,7 +86,7 @@ module PaypalAdaptive
 
       logger.request(path, api_request_data, @@headers) if logger
       resp, response_data = http.post(path, api_request_data, @@headers)
-      logger.response(resp, response_data) if logger
+      logger.response(resp.code, response_data) if logger
 
       JSON.parse(response_data)
     end
