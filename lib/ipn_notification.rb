@@ -12,8 +12,7 @@ module PaypalAdaptive
       @@paypal_base_url ||= @@config.paypal_base_url
     end
     
-    def send_back(data)
-      logger = data.delete(:logger) || data.delete("logger")
+    def send_back(data, logger = nil)
       data = "cmd=_notify-validate&#{data}"
       url = URI.parse @@paypal_base_url
       http = Net::HTTP.new(url.host, 443)
