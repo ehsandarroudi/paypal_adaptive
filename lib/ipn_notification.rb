@@ -13,13 +13,17 @@ module PaypalAdaptive
     end
     
     def send_back(data)
+      logger = data.delete(:logger) || data.delete("logger")
       data = "cmd=_notify-validate&#{data}"
       url = URI.parse @@paypal_base_url
       http = Net::HTTP.new(url.host, 443)
       http.use_ssl = (url.scheme == 'https')
       
       path = "#{@@paypal_base_url}/cgi-bin/webscr"
+
+      logger.request(path, data, "") if logger
       resp, response_data = http.post(path, data)
+      logger.response(resp.code, response_data) if logger
       
       @verified = response_data == "VERIFIED"
     end
